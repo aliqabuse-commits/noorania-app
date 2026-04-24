@@ -1,562 +1,77 @@
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>النورانية العالمية — الدرس الرابع v8</title>
-<style>
-  :root{
-    --book-blue:#6aa6d8;
-    --book-blue-dark:#4b87bb;
-    --book-green:#2f8a3f;
-    --book-red:#b63f2f;
-    --paper:#f8f2e6;
-    --paper-2:#fffdf7;
-    --ink:#1b1b1b;
-    --muted:#666;
-    --gold:#d6c7a7;
-  }
-  *{box-sizing:border-box}
-  body{
-    margin:0;
-    font-family:"Tahoma","Arial",sans-serif;
-    background:#efede4;
-    color:var(--ink);
-  }
-  .app{
-    max-width:620px;
-    margin:0 auto;
-    min-height:100vh;
-    background:#f3efe5;
-  }
-
-  .page-frame{
-    margin:12px;
-    background:var(--paper-2);
-    border:8px solid var(--book-blue);
-    border-radius:18px;
-    box-shadow:0 8px 24px rgba(0,0,0,.08);
-    overflow:hidden;
-  }
-
-  .lesson-head{
-    background:linear-gradient(180deg,#fefcf8,#f7f0e4);
-    padding:14px 14px 10px;
-    border-bottom:2px solid #d9d0bf;
-  }
-
-  .head-ribbon{
-    display:flex;
-    gap:8px;
-    align-items:stretch;
-  }
-  .head-title{
-    background:var(--book-green);
-    color:#fff;
-    padding:12px 18px;
-    border-radius:10px;
-    font-size:28px;
-    font-weight:800;
-    white-space:nowrap;
-  }
-  .head-sub{
-    flex:1;
-    background:var(--book-red);
-    color:#fff;
-    padding:12px 16px;
-    border-radius:10px;
-    font-size:22px;
-    font-weight:800;
-  }
-  .head-note{
-    margin-top:10px;
-    color:#4d4d4d;
-    line-height:1.9;
-    font-size:15px;
-  }
-
-  .inner{
-    padding:14px;
-    background:var(--paper);
-  }
-
-  .book-tabs{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:10px;
-    margin-bottom:12px;
-  }
-  .tab{
-    background:#fffef9;
-    border:3px solid #d8e6f3;
-    border-radius:14px;
-    padding:14px 8px;
-    text-align:center;
-    font-size:18px;
-    font-weight:800;
-    color:#28566f;
-    cursor:pointer;
-  }
-  .tab.active{
-    background:#e9f4ec;
-    border-color:var(--book-green);
-    color:var(--book-green);
-    box-shadow:inset 0 0 0 2px #b8d9c0;
-  }
-
-  .section-card{
-    background:#fffdf8;
-    border:2px solid #d9d0bf;
-    border-radius:18px;
-    padding:14px;
-    margin-bottom:12px;
-  }
-
-  .section-title{
-    font-size:24px;
-    font-weight:800;
-    margin:0 0 8px;
-    color:#214b31;
-  }
-  .muted{
-    color:var(--muted);
-    line-height:1.9;
-  }
-
-  .harakat-grid,.words-grid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:10px;
-    margin-top:12px;
-  }
-  .haraka-box,.word-box{
-    background:#fff;
-    border:2px solid #d7d0c2;
-    border-radius:14px;
-    padding:14px 8px;
-    text-align:center;
-    cursor:pointer;
-  }
-  .haraka-box.active,.word-box.active{
-    background:#eef8f0;
-    border-color:var(--book-green);
-    box-shadow:inset 0 0 0 2px #9ac9a5;
-  }
-  .haraka-symbol{
-    font-size:34px;
-    font-weight:800;
-  }
-  .word-symbol{
-    font-size:28px;
-    font-weight:800;
-  }
-
-  .selected-big{
-    text-align:center;
-    font-size:54px;
-    font-weight:800;
-    margin-bottom:10px;
-  }
-
-  .reading-box{
-    background:#fff;
-    border:2px solid #e0d8c8;
-    border-radius:16px;
-    padding:12px;
-    margin-top:10px;
-  }
-  .reading-title{
-    color:#1f5d37;
-    font-size:20px;
-    font-weight:800;
-    margin-bottom:8px;
-  }
-  .reading-content{
-    font-size:20px;
-    line-height:2.1;
-  }
-
-  .btn-row{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:10px;
-    margin-top:12px;
-  }
-  .btn{
-    border:none;
-    border-radius:14px;
-    padding:15px 12px;
-    font-size:17px;
-    font-weight:800;
-    cursor:pointer;
-  }
-  .btn.blue{
-    background:linear-gradient(180deg,#3e80cd,#2a68b0);
-    color:#fff;
-  }
-  .btn.green{
-    background:linear-gradient(180deg,#43a75f,#2f8a3f);
-    color:#fff;
-  }
-  .btn.ghost{
-    background:#f2ede2;
-    color:#50655d;
-  }
-
-  .submodes{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:10px;
-    margin-top:10px;
-  }
-  .submode{
-    background:#fff;
-    border:2px solid #d7d0c2;
-    border-radius:14px;
-    padding:14px 8px;
-    text-align:center;
-    font-weight:800;
-    cursor:pointer;
-    color:#27546b;
-  }
-  .submode.active{
-    background:#eef8f0;
-    border-color:var(--book-green);
-    color:var(--book-green);
-  }
-
-  .page{display:none}
-  .page.active{display:block}
-
-  .footer-nav{
-    position:sticky;
-    bottom:0;
-    background:#f7f3e9;
-    border-top:1px solid #d7d0c2;
-    padding:10px 12px;
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:8px;
-  }
-
-  .tiny-note{
-    font-size:13px;
-    color:#6b6b6b;
-    margin-top:8px;
-  }
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>النورانية العالمية — المرحلة الثانية</title>
+  <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
-<div class="app">
-  <div class="page-frame">
-    <div class="lesson-head">
-      <div class="head-ribbon">
-        <div class="head-title">الدرس الرابع</div>
-        <div class="head-sub">الحروف المتحركة — التدريب — التطبيقات</div>
+  <div class="app">
+    <header class="book-header">
+      <div class="ribbon">
+        <div class="ribbon-green">المرحلة الثانية</div>
+        <div class="ribbon-red" id="headerTitle">الحروف المتحركة والمنونة</div>
       </div>
-      <div class="head-note">
-        تقريب بصري لهوية القاعدة: لون الورق، الإطار الأزرق، شريط العنوان، والتقسيم الواضح بين الحركات والتدريب والتطبيقات.
+      <div class="header-note" id="headerNote">
+        نسخة منظمة: الواجهة منفصلة، البيانات منفصلة، محرك القراءة منفصل، ومحرك الصوت منفصل.
       </div>
-    </div>
+    </header>
 
-    <div class="inner">
-      <div class="book-tabs">
-        <div class="tab active" data-page="harakat" onclick="switchTab(this)">الحركات</div>
-        <div class="tab" data-page="training" onclick="switchTab(this)">التدريب</div>
-        <div class="tab" data-page="applications" onclick="switchTab(this)">التطبيقات</div>
-      </div>
-
-      <section id="page-harakat" class="page active">
-        <div class="section-card">
-          <h3 class="section-title">حروف الحركات</h3>
-          <div class="muted">اضغط على الحرف المتحرك، ثم استمع إلى القراءة النورانية أو التقطيعية أو الحرة.</div>
-          <div class="harakat-grid" id="harakatGrid"></div>
-        </div>
-
-        <div class="section-card">
-          <div class="selected-big" id="selectedHaraka">كَ</div>
-
-          <div class="reading-box">
-            <div class="reading-title">القراءة النورانية</div>
-            <div class="reading-content" id="harakaNoorani"></div>
-          </div>
-
-          <div class="reading-box">
-            <div class="reading-title">القراءة التقطيعية</div>
-            <div class="reading-content" id="harakaTaqti"></div>
-          </div>
-
-          <div class="reading-box">
-            <div class="reading-title">القراءة الحرة</div>
-            <div class="reading-content" id="harakaFree"></div>
-          </div>
-
-          <div class="btn-row">
-            <button class="btn blue" onclick="playHarakaNoorani()">استمع القراءة النورانية</button>
-            <button class="btn green" onclick="playHarakaTaqti()">استمع القراءة التقطيعية</button>
-          </div>
-          <div class="btn-row">
-            <button class="btn blue" onclick="playHarakaFree()">استمع القراءة الحرة</button>
-            <button class="btn green" onclick="speak('ردد',0.52)">استمع وردد معي</button>
-          </div>
+    <main class="content">
+      <section id="screen-stage" class="screen active">
+        <div class="card">
+          <h2>المرحلة الثانية</h2>
+          <p class="muted">اختر الدرس. كل درس صار بيانات مستقلة تعمل عبر نفس محرك القراءة.</p>
+          <div id="lessonsList" class="list"></div>
         </div>
       </section>
 
-      <section id="page-training" class="page">
-        <div class="section-card">
-          <h3 class="section-title">التدريب</h3>
-          <div class="muted">اختر نوع التدريب أولًا، ثم اضغط على الحرف الذي تريد الاستماع إليه أو ترديده.</div>
-
-          <div class="submodes">
-            <div class="submode active" data-mode="listen_noorani" onclick="selectMode(this)">استمع النورانية</div>
-            <div class="submode" data-mode="repeat_noorani" onclick="selectMode(this)">استمع وردد النورانية</div>
-            <div class="submode" data-mode="listen_taqti" onclick="selectMode(this)">استمع التقطيعية</div>
-            <div class="submode" data-mode="repeat_taqti" onclick="selectMode(this)">استمع وردد التقطيعية</div>
-            <div class="submode" data-mode="listen_free" onclick="selectMode(this)">استمع الحرة</div>
-            <div class="submode" data-mode="repeat_free" onclick="selectMode(this)">استمع وردد الحرة</div>
-          </div>
-
-          <div class="harakat-grid" id="trainingGrid"></div>
-          <div class="tiny-note">الخانة التي تضغط عليها تظهر خضراء، ويعمل عليها النمط المختار مباشرة.</div>
-        </div>
-      </section>
-
-      <section id="page-applications" class="page">
-        <div class="section-card">
-          <h3 class="section-title">تطبيقات الدرس الرابع</h3>
-          <div class="muted">هذه الكلمات تعرض بهيئاتها الثلاث: النورانية، التقطيعية، والحرة.</div>
-          <div class="words-grid" id="wordsGrid"></div>
+      <section id="screen-lesson" class="screen">
+        <div class="card">
+          <button class="ghost" onclick="UI.goStage()">عودة إلى المرحلة الثانية</button>
+          <h2 id="lessonTitle"></h2>
+          <p class="muted" id="lessonDescription"></p>
+          <div class="tabs" id="lessonTabs"></div>
         </div>
 
-        <div class="section-card">
-          <div class="selected-big" id="selectedWord">كَتَبَ</div>
+        <div class="card" id="itemsCard">
+          <h3 id="itemsTitle">العناصر</h3>
+          <div id="itemsGrid" class="grid"></div>
+        </div>
 
-          <div class="reading-box">
-            <div class="reading-title">القراءة النورانية</div>
-            <div class="reading-content" id="wordNoorani"></div>
+        <div class="card">
+          <div class="big" id="selectedMain">—</div>
+
+          <div class="read">
+            <div class="read-title">القراءة النورانية</div>
+            <div class="read-content" id="nooraniBox"></div>
           </div>
 
-          <div class="reading-box">
-            <div class="reading-title">القراءة التقطيعية</div>
-            <div class="reading-content" id="wordTaqti"></div>
+          <div class="read">
+            <div class="read-title">القراءة التقطيعية</div>
+            <div class="read-content" id="taqtiBox"></div>
           </div>
 
-          <div class="reading-box">
-            <div class="reading-title">القراءة الحرة</div>
-            <div class="reading-content" id="wordFree"></div>
+          <div class="read">
+            <div class="read-title">القراءة الحرة</div>
+            <div class="read-content" id="freeBox"></div>
           </div>
 
-          <div class="btn-row">
-            <button class="btn blue" onclick="playWordNoorani()">استمع القراءة النورانية</button>
-            <button class="btn green" onclick="playWordTaqti()">استمع القراءة التقطيعية</button>
-          </div>
-          <div class="btn-row">
-            <button class="btn blue" onclick="playWordFree()">استمع القراءة الحرة</button>
-            <button class="btn green" onclick="playWordRepeat()">استمع وردد معي الحرة</button>
+          <div class="buttons">
+            <button class="blue" onclick="UI.play('noorani')">استمع النورانية</button>
+            <button class="green" onclick="UI.play('taqti')">استمع التقطيعية</button>
+            <button class="blue" onclick="UI.play('free')">استمع الحرة</button>
+            <button class="green" onclick="AudioEngine.stop()">إيقاف الصوت</button>
           </div>
         </div>
       </section>
-    </div>
+    </main>
   </div>
 
-  <div class="footer-nav">
-    <button class="btn ghost" onclick="activatePage('harakat')">الحركات</button>
-    <button class="btn ghost" onclick="activatePage('training')">التدريب</button>
-    <button class="btn ghost" onclick="activatePage('applications')">التطبيقات</button>
-  </div>
-</div>
-
-<script>
-const groups = [
-  {base:'ك', nooraniName:'كافٌ', items:[{s:'كَ',h:'فتحٌ'},{s:'كِ',h:'كسرٌ'},{s:'كُ',h:'ضمٌّ'}]},
-  {base:'ت', nooraniName:'تاءٌ', items:[{s:'تَ',h:'فتحٌ'},{s:'تِ',h:'كسرٌ'},{s:'تُ',h:'ضمٌّ'}]},
-  {base:'ب', nooraniName:'باءٌ', items:[{s:'بَ',h:'فتحٌ'},{s:'بِ',h:'كسرٌ'},{s:'بُ',h:'ضمٌّ'}]},
-  {base:'خ', nooraniName:'خاءٌ', items:[{s:'خَ',h:'فتحٌ'},{s:'خِ',h:'كسرٌ'},{s:'خُ',h:'ضمٌّ'}]}
-];
-
-const words = [
-  {word:'كَتَبَ', noorani:['كافٌ فتحٌ كَ','تاءٌ فتحٌ تَ ، كَتَـ','باءٌ فتحٌ بَ ، كَتَبَ'], taqti:['كَ','تَ ، كَتَـ','بَ ، كَتَبَ'], free:'كَتَبَ'},
-  {word:'كَفَرَ', noorani:['كافٌ فتحٌ كَ','فاءٌ فتحٌ فَ ، كَفَـ','راءٌ فتحٌ رَ ، كَفَرَ'], taqti:['كَ','فَ ، كَفَـ','رَ ، كَفَرَ'], free:'كَفَرَ'},
-  {word:'كَسَبَ', noorani:['كافٌ فتحٌ كَ','سينٌ فتحٌ سَ ، كَسَـ','باءٌ فتحٌ بَ ، كَسَبَ'], taqti:['كَ','سَ ، كَسَـ','بَ ، كَسَبَ'], free:'كَسَبَ'},
-  {word:'أَخَذَ', noorani:['همزٌ فتحٌ أَ','خاءٌ فتحٌ خَ ، أَخَـ','ذالٌ فتحٌ ذَ ، أَخَذَ'], taqti:['أَ','خَ ، أَخَـ','ذَ ، أَخَذَ'], free:'أَخَذَ'},
-  {word:'بَخِلَ', noorani:['باءٌ فتحٌ بَ','خاءٌ كسرٌ خِ ، بَخِـ','لامٌ فتحٌ لَ ، بَخِلَ'], taqti:['بَ','خِ ، بَخِـ','لَ ، بَخِلَ'], free:'بَخِلَ'}
-];
-
-let currentGroup = groups[0];
-currentGroup.selected = 'كَ';
-let currentWord = words[0];
-let trainingMode = 'listen_noorani';
-let currentTrainingSelected = '';
-
-function speak(text, rate=0.50){
-  speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(text);
-  u.lang = 'ar-SA';
-  u.rate = rate;
-  speechSynthesis.speak(u);
-}
-function speakLines(lines, repeatAfter=false){
-  speechSynthesis.cancel();
-  let i=0;
-  function next(){
-    if(i>=lines.length){
-      if(repeatAfter){
-        setTimeout(()=>speak('ردد',0.52), 450);
-      }
-      return;
-    }
-    const u = new SpeechSynthesisUtterance(lines[i]);
-    u.lang='ar-SA';
-    u.rate=0.46;
-    u.onend=()=>setTimeout(next, 360);
-    speechSynthesis.speak(u);
-    i++;
-  }
-  next();
-}
-
-function switchTab(el){
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  el.classList.add('active');
-  activatePage(el.dataset.page);
-}
-function activatePage(name){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById('page-'+name).classList.add('active');
-  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active', t.dataset.page===name));
-}
-
-function renderHarakat(){
-  const grid = document.getElementById('harakatGrid');
-  grid.innerHTML='';
-  groups.forEach(g=>{
-    g.items.forEach(item=>{
-      const box = document.createElement('div');
-      box.className = 'haraka-box' + ((currentGroup.base===g.base && currentGroup.selected===item.s)?' active':'');
-      box.innerHTML = `<div class="haraka-symbol">${item.s}</div>`;
-      box.onclick = ()=>{
-        currentGroup = {...g, selected:item.s};
-        renderHarakat();
-        renderHarakatDetail();
-        speak(item.s,0.52);
-      };
-      grid.appendChild(box);
-    });
-  });
-}
-function renderHarakatDetail(){
-  const g = currentGroup;
-  const a=g.items[0], b=g.items[1], c=g.items[2];
-  document.getElementById('selectedHaraka').textContent = g.selected;
-  document.getElementById('harakaNoorani').innerHTML =
-    `${g.nooraniName} ${a.h} ${a.s}<br>`+
-    `${g.nooraniName} ${b.h} ${b.s} ، ${a.s}${b.s}<br>`+
-    `${g.nooraniName} ${c.h} ${c.s} ، ${a.s}${b.s}${c.s}`;
-  document.getElementById('harakaTaqti').innerHTML =
-    `${a.s}<br>${b.s} ، ${a.s}${b.s}<br>${c.s} ، ${a.s}${b.s}${c.s}`;
-  document.getElementById('harakaFree').textContent = `${a.s} ، ${b.s} ، ${c.s}`;
-}
-function playHarakaNoorani(){
-  const g=currentGroup; const a=g.items[0], b=g.items[1], c=g.items[2];
-  speakLines([
-    `${g.nooraniName} ${a.h} ${a.s}`,
-    `${g.nooraniName} ${b.h} ${b.s} ، ${a.s}${b.s}`,
-    `${g.nooraniName} ${c.h} ${c.s} ، ${a.s}${b.s}${c.s}`
-  ]);
-}
-function playHarakaTaqti(){
-  const g=currentGroup; const a=g.items[0], b=g.items[1], c=g.items[2];
-  speakLines([`${a.s}`, `${b.s} ، ${a.s}${b.s}`, `${c.s} ، ${a.s}${b.s}${c.s}`]);
-}
-function playHarakaFree(){
-  const g=currentGroup; const a=g.items[0], b=g.items[1], c=g.items[2];
-  speak(`${a.s} ، ${b.s} ، ${c.s}`,0.52);
-}
-
-function selectMode(el){
-  document.querySelectorAll('.submode').forEach(s=>s.classList.remove('active'));
-  el.classList.add('active');
-  trainingMode = el.dataset.mode;
-}
-function renderTraining(){
-  const grid = document.getElementById('trainingGrid');
-  grid.innerHTML='';
-  groups.forEach(g=>{
-    g.items.forEach(item=>{
-      const box = document.createElement('div');
-      box.className = 'haraka-box' + (currentTrainingSelected===item.s?' active':'');
-      box.innerHTML = `<div class="haraka-symbol">${item.s}</div>`;
-      box.onclick = ()=>{
-        currentTrainingSelected = item.s;
-        renderTraining();
-        runTraining(g,item);
-      };
-      grid.appendChild(box);
-    });
-  });
-}
-function runTraining(g,item){
-  const a=g.items[0], b=g.items[1], c=g.items[2];
-  if(trainingMode==='listen_noorani'){
-    if(item.s===a.s) speakLines([`${g.nooraniName} ${a.h} ${a.s}`]);
-    if(item.s===b.s) speakLines([`${g.nooraniName} ${b.h} ${b.s} ، ${a.s}${b.s}`]);
-    if(item.s===c.s) speakLines([`${g.nooraniName} ${c.h} ${c.s} ، ${a.s}${b.s}${c.s}`]);
-  }
-  if(trainingMode==='repeat_noorani'){
-    if(item.s===a.s) speakLines([`${g.nooraniName} ${a.h} ${a.s}`], True);
-    if(item.s===b.s) speakLines([`${g.nooraniName} ${b.h} ${b.s} ، ${a.s}${b.s}`], True);
-    if(item.s===c.s) speakLines([`${g.nooraniName} ${c.h} ${c.s} ، ${a.s}${b.s}${c.s}`], True);
-  }
-  if(trainingMode==='listen_taqti'){
-    if(item.s===a.s) speakLines([`${a.s}`]);
-    if(item.s===b.s) speakLines([`${b.s} ، ${a.s}${b.s}`]);
-    if(item.s===c.s) speakLines([`${c.s} ، ${a.s}${b.s}${c.s}`]);
-  }
-  if(trainingMode==='repeat_taqti'){
-    if(item.s===a.s) speakLines([`${a.s}`], True);
-    if(item.s===b.s) speakLines([`${b.s} ، ${a.s}${b.s}`], True);
-    if(item.s===c.s) speakLines([`${c.s} ، ${a.s}${b.s}${c.s}`], True);
-  }
-  if(trainingMode==='listen_free'){
-    speak(item.s,0.52);
-  }
-  if(trainingMode==='repeat_free'){
-    speakLines([item.s], True);
-  }
-}
-
-function renderWords(){
-  const grid = document.getElementById('wordsGrid');
-  grid.innerHTML='';
-  words.forEach(w=>{
-    const box = document.createElement('div');
-    box.className='word-box' + (currentWord.word===w.word?' active':'');
-    box.innerHTML=`<div class="word-symbol">${w.word}</div>`;
-    box.onclick=()=>{
-      currentWord=w;
-      renderWords();
-      renderWordDetail();
-    };
-    grid.appendChild(box);
-  });
-}
-function renderWordDetail(){
-  document.getElementById('selectedWord').textContent=currentWord.word;
-  document.getElementById('wordNoorani').innerHTML=currentWord.noorani.join('<br>');
-  document.getElementById('wordTaqti').innerHTML=currentWord.taqti.join('<br>');
-  document.getElementById('wordFree').textContent=currentWord.free;
-}
-function playWordNoorani(){ speakLines(currentWord.noorani); }
-function playWordTaqti(){ speakLines(currentWord.taqti); }
-function playWordFree(){ speak(currentWord.free,0.52); }
-function playWordRepeat(){ speakLines([currentWord.free], true); }
-
-renderHarakat();
-renderHarakatDetail();
-renderTraining();
-renderWords();
-renderWordDetail();
-</script>
+  <script src="./data/stage2-data.js"></script>
+  <script src="./engine/reading-engine.js"></script>
+  <script src="./engine/audio-engine.js"></script>
+  <script src="./app.js"></script>
 </body>
 </html>
